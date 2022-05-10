@@ -50,12 +50,9 @@
             <template x-for="player in players">
                 <div class="">
                     <div class="" x-text="player.name"></div>
-                    <button class="bg-red-500 px-4 py-2 text-white rounded-lg" @click="leaveRoom()" x-show="player.playerId == userId">Leave Room</button>
                 </div>
             </template>
         </div>
-        <!-- <div class="absolute top-24 right-12" x-show="!showForm">
-        </div> -->
         <div class="bg-white p-1 rounded border w-max grid grid-cols-11 gap-2 mt-4" x-show="!showForm">
             <template x-for="color in colors">
                 <div class="h-8 w-8 rounded cursor-pointer border border-gray-300" @click="selectedColor = color" :class="color == selectedColor ? `bg-${color} shadow` : `bg-${color}/50`"></div>
@@ -105,16 +102,11 @@
                 joinRoom: async function(){
                     let newUser = {
                         name: this.playerName,
-                        id: this.playerName.id
                     }
                     await db.collection("rooms").doc(this.roomId).collection("players").add(newUser);
                     await this.getPlayers()
                     this.showForm = false
                     this.fetchCells()
-                },
-                leaveRoom(){
-                    db.collection("rooms").doc(this.roomId).collection("players").doc(this.playerName.id).delete()
-                    this.showForm = true
                 },
                 players: [],
                 getPlayers: async function(){
